@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "scripts": {
+    "server-dev": "npx nodemon server/index.js",
+    "server-start": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7"
+  }
+}
