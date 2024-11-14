@@ -17,9 +17,9 @@ const UserSchema = new mongoose.Schema({
 export const User = mongoose.model('User', UserSchema);
 
 const BookSchema = new mongoose.Schema({
-  bookID: { type: String, required: true },
-  userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  borrowerID: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  bookID: { type: String, required: true,index: true  },
+  userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true,index: true },
+  borrowerID: { type: mongoose.Schema.Types.ObjectId, ref: 'User',index: true  },
   title: { type: String, required: true },
   created_date: { type: Date, default: Date.now },
   due_date: { type: Date },
