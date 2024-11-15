@@ -27,6 +27,7 @@ const seedDatabase = async () => {
 
 const userSeedData = [
   {
+    _id: new mongoose.Types.ObjectId('6736472090d8a0d1e7b37c9d'),
     username: "john_doe",
     password: "hashedpassword1",
     firstname: "John",
@@ -41,6 +42,7 @@ const userSeedData = [
     preferred_contact: "email"
   },
   {
+    _id: new mongoose.Types.ObjectId('6736472090d8a0d1e7b37c9e'),
     username: "jane_smith",
     password: "hashedpassword2",
     firstname: "Jane",
