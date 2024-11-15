@@ -21,7 +21,7 @@ const BookSchema = new mongoose.Schema({
   userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true,index: true },
   borrowerID: { type: mongoose.Schema.Types.ObjectId, ref: 'User',index: true  },
   title: { type: String, required: true },
-  created_date: { type: Date, default: Date.now },
+  created_date: { type: Date, default: Date.now()},
   due_date: { type: Date },
   author: { type: String, required: true },
   description: { type: String },
@@ -40,7 +40,7 @@ const ContactSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   message: { type: String, required: true },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now()}
 });
 export const Contact = mongoose.model('Contact', ContactSchema);
 
