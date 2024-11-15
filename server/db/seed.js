@@ -29,7 +29,6 @@ const userSeedData = [
   {
     username: "john_doe",
     password: "hashedpassword1",
-    salt: "randomsalt1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
@@ -44,7 +43,6 @@ const userSeedData = [
   {
     username: "jane_smith",
     password: "hashedpassword2",
-    salt: "randomsalt2",
     firstname: "Jane",
     lastname: "Smith",
     phone: "+0987654321",
