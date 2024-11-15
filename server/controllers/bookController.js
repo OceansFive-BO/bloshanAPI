@@ -1,4 +1,6 @@
 import { Book } from '../db/models.js';
+import axios from 'axios';
+import 'dotenv/config';
 const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
   res.sendStatus(statusCode);
@@ -34,6 +36,7 @@ export const getBooks = async (req, res) => {
     logAndSendStatus(error, res);
   }
 };
+
 export const getBooksByGenre = async (req, res) => {
   const genre = req.params.genre;
   const count = 5;
@@ -46,6 +49,7 @@ export const getBooksByGenre = async (req, res) => {
     logAndSendStatus(error, res);
   }
 };
+
 export const getBooksByTitle = async (req, res) => {
   const title = req.params.title;
   const count = 5;
@@ -58,13 +62,7 @@ export const getBooksByTitle = async (req, res) => {
     logAndSendStatus(error, res);
   }
 };
-/*const getBooksByGenre = async (genre, count = 5) => {
-  try {
-
-    const books = await Book.findMany({ genre: { $regex: `/${genre}/i` } }).select('-borrowerID -_id -due_date -userID').limit(count);
-    res.send(books);
-  } catch (error) {
-    logAndSendStatus(error, res, statusCode);
-  }
-};*/
-//const getBooksByTitle
+export const addBook  = async (req, res) => {
+  /*const googleBookId = req.body.bookID;
+  const {notes,userID} = req.body;*/
+};
