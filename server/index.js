@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js';
 import bookRoutes from './routes/bookRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 
 const PORT = 3000;
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/users', userRoutes);
 app.use('/books', bookRoutes);
+app.use('/contact',contactRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://Port:${PORT}`);
