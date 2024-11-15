@@ -1,11 +1,13 @@
 {
   "type": "module",
   "scripts": {
-    "server-dev": "npx nodemon server/index.js",
+    "dev": "npx nodemon server/index.js",
     "server-start": "node server/index.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.1",
+    "mongoose": "^8.8.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.7"
   }
