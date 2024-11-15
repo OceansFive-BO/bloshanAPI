@@ -3,10 +3,10 @@ import { getBooks,getBookByID,getBooksByGenre,getBooksByTitle,addBook } from '..
 
 const router = express.Router();
 
-router.get('/', getBooks);
 router.get('/:id', getBookByID);
 router.get('/genre/:genre', getBooksByGenre);
 router.get('/title/:title', getBooksByTitle);
+router.get('/', getBooks);
 router.post('/', addBook);
 
 export default router;

@@ -27,6 +27,7 @@ const seedDatabase = async () => {
 
 const userSeedData = [
   {
+    _id: new mongoose.Types.ObjectId('6736472090d8a0d1e7b37c9d'),
     username: "john_doe",
     password: "hashedpassword1",
     firstname: "John",
@@ -41,6 +42,7 @@ const userSeedData = [
     preferred_contact: "email"
   },
   {
+    _id: new mongoose.Types.ObjectId('6736472090d8a0d1e7b37c9e'),
     username: "jane_smith",
     password: "hashedpassword2",
     firstname: "Jane",
@@ -70,7 +72,7 @@ const bookSeedData = [
     description: "A beginner's guide to JavaScript",
     notes: "Useful for front-end development",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    ratings: 4.5,
+    maturityRating: 'NOT_MATURE'
     genre: "Programming",
     publish_date: new Date("2020-01-01"),
     likes: 0
@@ -87,7 +89,7 @@ const bookSeedData = [
     description: "In-depth guide on data structures",
     notes: "For intermediate programmers",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    ratings: 4.8,
+    maturityRating: 'NOT_MATURE',
     genre: "Computer Science",
     publish_date: new Date("2019-06-15"),
     likes: 0
@@ -104,7 +106,7 @@ const bookSeedData = [
     description: "An advanced guide to modern web tools",
     notes: "Covers React, Angular, Vue",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    ratings: 4.7,
+    maturityRating: 'MATURE',
     genre: "Programming",
     publish_date: new Date("2021-03-10"),
     likes: 0
@@ -128,4 +130,3 @@ const contactSeedData = [
     message: "Can I borrow more than three books at a time?"
   }
 ];
-
