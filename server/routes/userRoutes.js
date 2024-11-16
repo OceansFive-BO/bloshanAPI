@@ -11,6 +11,7 @@ router.get('/', getUsers);
 router.get('/:id', getUserById);
 router.get('/:id/borrowed', getBorrowedBooksByUserId);
 router.get('/:id/lent', getLentBooksByUserId);
+router.get('/:id/recommended', getRecommendedBooks);
 router.post('/', addUser);
 
 
