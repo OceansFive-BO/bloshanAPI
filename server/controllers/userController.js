@@ -51,7 +51,7 @@ export const getLentBooksByUserId = async (req, res) => {
 export const addUser = async (req, res) => {
   try {
     await User.create(req.body).select('-password');
-    res.send(201);
+    res.sendStatus(201);
   } catch (error) {
     console.error('Error adding users:');
     logAndSendStatus(error, res);
