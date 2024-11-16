@@ -10,8 +10,8 @@ const UserSchema = new mongoose.Schema({
   address: { type: String, required: true },
   birth_date: { type: Date, required: true },
   photo_url: { type: String },
-  borrowed_books: [Number],
-  lending_books: [Number],
+  borrowed_books: [{type: mongoose.Schema.Types.ObjectId}],
+  lending_books: [{type: mongoose.Schema.Types.ObjectId}],
   preferred_contact: { type: String, enum: ['phone', 'email'], required: true }
 });
 export const User = mongoose.model('User', UserSchema);
@@ -19,7 +19,7 @@ export const User = mongoose.model('User', UserSchema);
 const BookSchema = new mongoose.Schema({
   bookID: { type: String, required: true,index: true  },
   userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true,index: true },
-  borrowerID: { type: mongoose.Schema.Types.ObjectId, ref: 'User',index: true  },
+  borrowerID: { type: mongoose.Schema.Types.ObjectId, ref: 'User',index: true,default:null  },
   title: { type: String, required: true },
   created_date: { type: Date, default: Date.now()},
   due_date: { type: Date },
@@ -29,7 +29,7 @@ const BookSchema = new mongoose.Schema({
   image: { type: String },
   thumbnail: { type: String },
   maturityRating: {type:String },
-  genre: { type: String, required: true },
+  genre: { type: String },
   publish_date: { type: Date, required: true },
   available: { type: Boolean, default: true },
   likes: { type: Number, default: 0 }
