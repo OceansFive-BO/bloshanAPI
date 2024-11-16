@@ -36,7 +36,7 @@ export const getBooks = async (req, res) => {
     query.genre = genreRegex;
   }
   try {
-    const books = await Book.find(query).select('-borrowerID -_id -due_date -userID').limit(count);
+    const books = await Book.find(query).select('-borrowerID -due_date -userID').limit(count);
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -52,7 +52,7 @@ export const getBooksByGenre = async (req, res) => {
   let regex = new RegExp(`${genre}`, "i");
   try {
     const books = await Book.find({ genre: regex })
-      .select('-borrowerID -_id -due_date -userID').limit(count);
+      .select('-borrowerID -due_date -userID').limit(count);
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -68,7 +68,7 @@ export const getBooksByTitle = async (req, res) => {
   let regex = new RegExp(`${title}`, "i");
   try {
     const books = await Book.find({ title: regex })
-      .select('-borrowerID -_id -due_date -userID').limit(count);
+      .select('-borrowerID -due_date -userID').limit(count);
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);
