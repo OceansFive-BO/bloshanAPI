@@ -29,7 +29,7 @@ export const getBorrowedBooksByUserId = async (req, res) => {
   try {
     const selectedUser = await User.findOne({ _id: req.params.id }).select('-password');
     const borrowedBooks = selectedUser.borrowed_books;
-    const books = await Book.find({ bookID: { $in: borrowedBooks } });
+    const books = await Book.find({ _id: { $in: borrowedBooks } });
     res.send(books);
   } catch (error) {
     console.error('Error fetching user:');
@@ -41,7 +41,7 @@ export const getLentBooksByUserId = async (req, res) => {
   try {
     const selectedUser = await User.findOne({ _id: req.params.id }).select('-password');
     const lentBooks = selectedUser.lending_books;
-    const books = await Book.find({ bookID: { $in: lentBooks } });
+    const books = await Book.find({ _id: { $in: lentBooks } });
     res.send(books);
   } catch (error) {
     console.error('Error fetching user: ');
@@ -61,8 +61,12 @@ export const addUser = async (req, res) => {
 //NEED TO UPDATE ALGO
 export const getRecommendedBooks = async (req, res) => {
   const userID = req.params.id;
+  if(!userID){
+    return res.send("Invalid User ID");
+  }
   const count = 10;
   try {
+    const user = User.find({_id:userID});
     const books = await Book.find({}).sort({likes:-1})
       .select('-borrowerID -_id -due_date -userID').limit(count);
     res.send(books);
