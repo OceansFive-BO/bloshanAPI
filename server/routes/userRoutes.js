@@ -1,5 +1,9 @@
 import express from 'express';
-import { getUsers, getUserById, getBorrowedBooksByUserId, getLentBooksByUserId,addUser } from '../controllers/userController.js';
+import {
+  getUsers, getUserById,
+  getBorrowedBooksByUserId, getLentBooksByUserId,
+  addUser, getRecommendedBooks
+} from '../controllers/userController.js';
 
 const router = express.Router();
 

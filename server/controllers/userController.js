@@ -57,3 +57,16 @@ export const addUser = async (req, res) => {
     logAndSendStatus(error, res);
   }
 };
+
+//NEED TO UPDATE ALGO
+export const getRecommendedBooks = async (req, res) => {
+  const userID = req.params.id;
+  const count = 10;
+  try {
+    const books = await Book.find({}).sort({likes:-1})
+      .select('-borrowerID -_id -due_date -userID').limit(count);
+    res.send(books);
+  } catch (error) {
+    logAndSendStatus(error, res);
+  }
+};

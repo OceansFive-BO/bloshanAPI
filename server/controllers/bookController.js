@@ -1,7 +1,8 @@
 import { Book, User } from '../db/models.js';
 import axios from 'axios';
 import mongoose from 'mongoose';
-
+import 'dotenv/config';
+const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
 const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
@@ -10,7 +11,6 @@ const logAndSendStatus = (e, res, statusCode = 500) => {
 
 export const getBookByID = async (req, res) => {
   try {
-
     const book = await Book.findOne({ _id: req.params.id }).select('-borrowerID -due_date -userID');
     res.send(book);
   } catch (error) {
@@ -54,12 +54,35 @@ export const getBooksByGenre = async (req, res) => {
 
 export const getBooksByTitle = async (req, res) => {
   const title = req.params.title;
+  if (!title) {
+    res.send("This route requires a title in the format books/title/[searchTerm]");
+  }
   const count = 5;
   let regex = new RegExp(`${title}`, "i");
   try {
     const books = await Book.find({ title: regex })
       .select('-borrowerID -_id -due_date -userID').limit(count);
     res.send(books);
+  } catch (error) {
+    logAndSendStatus(error, res);
+  }
+};
+
+
+export const likeBook = async (req, res) => {
+  const bookID = req.params.id;
+  if (!bookID) {
+    return res.send("need valid bookID");
+  }
+  try {
+    const updatedBook = await Book.updateOne(
+      { _id: bookID },
+      { $inc: { likes: 1 } }
+    );
+    if (!updatedBook.matchedCount) {
+      return res.send("Could not find book to like");
+    }
+    res.sendStatus(204);
   } catch (error) {
     logAndSendStatus(error, res);
   }
@@ -96,19 +119,61 @@ export const addBook = async (req, res) => {
   } catch (error) {
     logAndSendStatus(error, res);
   }
-
 };
+
+export const findNewBook = async (req, res) => {
+  const title = req.params.title;
+  const count = 15;
+  if (!title) {
+    return res.send("Finding new books requires a title in the format /books/newBooks/[SearchTerm]");
+  }
+  try {
+    const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/?q=*+intitle:${title}&startIndex=4&maxResults=${count}&key=${API_KEY}`);
+    const { items } = data;
+    const batch = []
+    for (const item of items) {
+      const googleBookId = item.id;
+      const { title, publishedDate, description, maturityRating, imageLinks } = item.volumeInfo;
+      const authors = item.volumeInfo.authors || ["Unlisted"];
+      const categories = item.volumeInfo.categories || ["Unlisted"];
+      const newBook = {
+        bookID: googleBookId,
+        title,
+        author: authors.join('/'),
+        description,
+        image: imageLinks?.thumbnail || null,
+        thumbnail: imageLinks?.thumbnail || null,
+        maturityRating,
+        genre: categories?.join('/') || [],
+        publish_date: new Date(publishedDate)
+      };
+      batch.push(newBook);
+    }
+    res.send(batch);
+  } catch (error) {
+    logAndSendStatus(error, res);
+  }
+};
+
+
 export const toggleLendStatus = async (req, res) => {
   const _id = req.params.id;
-  //console.log(_id);
+  if (!_id) {
+    return res.send("Invalid bookID");
+  }
   const ObjectId = mongoose.Types.ObjectId;
   try {
     let book = await Book.findOne({ _id: new ObjectId(_id) });
+    if (!book?.userID) {
+      return res.send("Cannot find book by ID");
+    }
     const { available } = book;
     const lenderID = new ObjectId(book.userID);
     let borrowerID = book.borrowerID || req.body.borrowerID;
     borrowerID = new ObjectId(borrowerID);
-
+    if (!borrowerID) {
+      return res.send("Invalid borrowerID in request body");
+    }
     let borrowerQuery = null;
     let lenderQuery = null;
     let bookUpdateQuery = null;
@@ -136,7 +201,7 @@ export const toggleLendStatus = async (req, res) => {
     await User.updateOne({ _id: lenderID }, lenderQuery);
     await User.updateOne({ _id: borrowerID }, borrowerQuery);
     await Book.updateOne({ _id: _id }, bookUpdateQuery);
-    res.send(204);
+    res.sendStatus(204);
   } catch (error) {
     logAndSendStatus(error, res);
   }

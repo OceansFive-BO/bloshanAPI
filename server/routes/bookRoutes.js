@@ -2,16 +2,19 @@ import express from 'express';
 import {
   getBooks, getBookByID,
   getBooksByGenre, getBooksByTitle,
-  addBook, toggleLendStatus
+  addBook, toggleLendStatus, likeBook,
+  findNewBook
 } from '../controllers/bookController.js';
 
 const router = express.Router();
 
 //router.put('/:id/available', getBookByID);
+router.get('/newBooks/:title', findNewBook);
+router.get('/title/:title', getBooksByTitle);
+router.get('/genre/:genre', getBooksByGenre);
+router.put('/:id/like', likeBook);
 router.put('/:id/lend', toggleLendStatus);
 router.get('/:id', getBookByID);
-router.get('/genre/:genre', getBooksByGenre);
-router.get('/title/:title', getBooksByTitle);
 router.get('/', getBooks);
 router.post('/', addBook);
 
