@@ -3,7 +3,7 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
-const DEFAULT_COUNT =5;
+const DEFAULT_COUNT = 5;
 
 const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
@@ -177,7 +177,7 @@ export const toggleLendStatus = async (req, res) => {
     }
     const { available } = book;
     const lenderID = new ObjectId(book.userID);
-    let borrowerID = book.borrowerID || req.body.borrowerID;
+    let borrowerID =req.body.userID;
     borrowerID = new ObjectId(borrowerID);
     if (!borrowerID) {
       return res.send("Invalid borrowerID in request body");
