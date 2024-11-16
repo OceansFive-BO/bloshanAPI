@@ -1,4 +1,4 @@
-import { Book,User } from '../db/models.js';
+import { Book, User } from '../db/models.js';
 import axios from 'axios';
 import mongoose from 'mongoose';
 
@@ -99,30 +99,28 @@ export const addBook = async (req, res) => {
 
 };
 export const toggleLendStatus = async (req, res) => {
-  const  _id  = req.params.id;
-  console.log(_id);
+  const _id = req.params.id;
+  //console.log(_id);
   const ObjectId = mongoose.Types.ObjectId;
   try {
     let book = await Book.findOne({ _id: new ObjectId(_id) });
-    //console.log(book);
     const { available } = book;
-    //console.log("book.available")
-    //console.log(book.available)
-    const lenderID = book.userID;
-    const borrowerID = book.borrowerID || req.body.borrowerID;
+    const lenderID = new ObjectId(book.userID);
+    let borrowerID = book.borrowerID || req.body.borrowerID;
+    borrowerID = new ObjectId(borrowerID);
 
     let borrowerQuery = null;
     let lenderQuery = null;
     let bookUpdateQuery = null;
     if (available) {
       borrowerQuery = {
-        "$push": { "lending_books": _id }
-      };
-      lenderQuery = {
         "$push": { "borrowed_books": _id }
       };
+      lenderQuery = {
+        "$push": { "lending_books": _id }
+      };
       bookUpdateQuery = {
-        $set: { available: false,borrowerID:new ObjectId(borrowerID) },
+        $set: { available: false, borrowerID },
       };
     } else {
       borrowerQuery = {
@@ -132,15 +130,14 @@ export const toggleLendStatus = async (req, res) => {
         "$pull": { "lending_books": _id }
       };
       bookUpdateQuery = {
-        $set: { available: true,borrowerID:null },
+        $set: { available: true, borrowerID: null },
       };
     }
-    await User.updateOne({ _id: new ObjectId(lenderID) }, lenderQuery);
-    await User.updateOne({ _id: new ObjectId(borrowerID) }, borrowerQuery);
-    await Book.updateOne({_id: new ObjectId(_id)},bookUpdateQuery);
+    await User.updateOne({ _id: lenderID }, lenderQuery);
+    await User.updateOne({ _id: borrowerID }, borrowerQuery);
+    await Book.updateOne({ _id: _id }, bookUpdateQuery);
     res.send(204);
-  }
-  catch (error) {
+  } catch (error) {
     logAndSendStatus(error, res);
   }
 
