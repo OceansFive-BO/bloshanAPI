@@ -10,6 +10,9 @@ const logAndSendStatus = (e, res, statusCode = 500) => {
 };
 
 export const getBookByID = async (req, res) => {
+  if(!req.params.id ){
+    return res.send("please include id in route /books/[bookID]");
+  }
   try {
     const book = await Book.findOne({ _id: req.params.id }).select('-borrowerID -due_date -userID');
     res.send(book);
@@ -41,6 +44,9 @@ export const getBooks = async (req, res) => {
 
 export const getBooksByGenre = async (req, res) => {
   const genre = req.params.genre;
+  if(!genre){
+    res.send("Couldn't process request please use route in the format /books/genre/[SearchTerm]");
+  }
   const count = 5;
   let regex = new RegExp(`${genre}`, "i");
   try {
