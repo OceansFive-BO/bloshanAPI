@@ -66,9 +66,9 @@ export const getRecommendedBooks = async (req, res) => {
   }
   const count = 10;
   try {
-    const user = User.find({_id:userID});
-    const books = await Book.find({}).sort({likes:-1})
-      .select('-borrowerID -_id -due_date -userID').limit(count);
+    const user = await User.find({_id:userID});
+    const alreadyBorrowed = user.borrowed_books;
+    const books = await Book.find({_id:{$nin:alreadyBorrowed}}).sort({likes:-1}).limit(count);
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);

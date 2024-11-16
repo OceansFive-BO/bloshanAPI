@@ -8,7 +8,6 @@ import {
 
 const router = express.Router();
 
-//router.put('/:id/available', getBookByID);
 router.get('/newBooks/:title', findNewBook);
 router.get('/title/:title', getBooksByTitle);
 router.get('/genre/:genre', getBooksByGenre);

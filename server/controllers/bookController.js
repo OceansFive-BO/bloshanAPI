@@ -3,6 +3,7 @@ import axios from 'axios';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
+const DEFAULT_COUNT =5;
 
 const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
@@ -10,7 +11,7 @@ const logAndSendStatus = (e, res, statusCode = 500) => {
 };
 
 export const getBookByID = async (req, res) => {
-  if(!req.params.id ){
+  if (!req.params.id) {
     return res.send("please include id in route /books/[bookID]");
   }
   try {
@@ -25,8 +26,8 @@ export const getBooks = async (req, res) => {
   const count = req.query.count || 20;
   const title = req.query.title;
   const genre = req.query.genre;
-  let titleRegex = new RegExp(`${title}`, "i")
-  let genreRegex = new RegExp(`${genre}`, "i")
+  let titleRegex = new RegExp(`${title}`, "i");
+  let genreRegex = new RegExp(`${genre}`, "i");
   const query = {};
   if (title) {
     query.title = titleRegex;
@@ -44,10 +45,10 @@ export const getBooks = async (req, res) => {
 
 export const getBooksByGenre = async (req, res) => {
   const genre = req.params.genre;
-  if(!genre){
+  if (!genre) {
     res.send("Couldn't process request please use route in the format /books/genre/[SearchTerm]");
   }
-  const count = 5;
+  const count = DEFAULT_COUNT;
   let regex = new RegExp(`${genre}`, "i");
   try {
     const books = await Book.find({ genre: regex })
@@ -63,7 +64,7 @@ export const getBooksByTitle = async (req, res) => {
   if (!title) {
     res.send("This route requires a title in the format books/title/[searchTerm]");
   }
-  const count = 5;
+  const count = DEFAULT_COUNT;
   let regex = new RegExp(`${title}`, "i");
   try {
     const books = await Book.find({ title: regex })
@@ -103,7 +104,8 @@ export const addBook = async (req, res) => {
     const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
     const bookData = data;
     const { volumeInfo, publisher, description } = bookData;
-    const { title, authors, imageLinks, maturityRating, categories, publishedDate } = volumeInfo;
+    const { title, authors, imageLinks,
+      maturityRating, categories, publishedDate } = volumeInfo;
 
     newBook = {
       bookID: googleBookId,
@@ -136,7 +138,7 @@ export const findNewBook = async (req, res) => {
   try {
     const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/?q=*+intitle:${title}&startIndex=4&maxResults=${count}&key=${API_KEY}`);
     const { items } = data;
-    const batch = []
+    const batch = [];
     for (const item of items) {
       const googleBookId = item.id;
       const { title, publishedDate, description, maturityRating, imageLinks } = item.volumeInfo;
