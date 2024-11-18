@@ -64,7 +64,6 @@ export const getRecommendedBooks = async (req, res) => {
     const user = await User.findOne({_id:userID});
     const alreadyBorrowed = user.borrowed_books;
     const books = await Book.find({_id:{$in:alreadyBorrowed}})
-    books.map(({bookID,genre}) => console.log(bookID + " " + genre))
     let alreadyBorrowedBookID = books.map(({bookID}) => bookID)
     let similarGenres = books.map(({genre}) => genre)
     const defaultRecommended = await Book.find({bookID:{$nin:alreadyBorrowedBookID}}).sort({likes:-1}).limit(count);
