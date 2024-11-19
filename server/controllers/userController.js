@@ -35,11 +35,9 @@ export const getBorrowedBooksByUserId = async (req, res) => {
   }
 };
 
-export const getLentBooksByUserId = async (req, res) => {
+export const getTotalBooksByUserId = async (req, res) => {
   try {
-    const selectedUser = await User.findOne({ _id: req.params.id }).select('-password');
-    const lentBooks = selectedUser.lending_books;
-    const books = await Book.find({ _id: { $in: lentBooks } });
+    const books = await Book.find({ userID: req.params.id });
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);
