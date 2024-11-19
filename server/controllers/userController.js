@@ -35,11 +35,9 @@ export const getBorrowedBooksByUserId = async (req, res) => {
   }
 };
 
-export const getLentBooksByUserId = async (req, res) => {
+export const getTotalBooksByUserId = async (req, res) => {
   try {
-    const selectedUser = await User.findOne({ _id: req.params.id }).select('-password');
-    const lentBooks = selectedUser.lending_books;
-    const books = await Book.find({ _id: { $in: lentBooks } });
+    const books = await Book.find({ userID: req.params.id });
     res.send(books);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -64,7 +62,6 @@ export const getRecommendedBooks = async (req, res) => {
     const user = await User.findOne({_id:userID});
     const alreadyBorrowed = user.borrowed_books;
     const books = await Book.find({_id:{$in:alreadyBorrowed}})
-    books.map(({bookID,genre}) => console.log(bookID + " " + genre))
     let alreadyBorrowedBookID = books.map(({bookID}) => bookID)
     let similarGenres = books.map(({genre}) => genre)
     const defaultRecommended = await Book.find({bookID:{$nin:alreadyBorrowedBookID}}).sort({likes:-1}).limit(count);

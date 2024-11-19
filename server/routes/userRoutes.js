@@ -1,8 +1,8 @@
 import express from 'express';
 import {
   getUsers, getUserById,
-  getBorrowedBooksByUserId, getLentBooksByUserId,
-  addUser, getRecommendedBooks
+  getBorrowedBooksByUserId,
+  addUser, getRecommendedBooks,getTotalBooksByUserId
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', getUsers);
 router.get('/:id', getUserById);
 router.get('/:id/borrowed', getBorrowedBooksByUserId);
-router.get('/:id/lending', getLentBooksByUserId);
+router.get('/:id/lending', getTotalBooksByUserId);
 router.get('/:id/recommended', getRecommendedBooks);
 router.post('/', addUser);
 
