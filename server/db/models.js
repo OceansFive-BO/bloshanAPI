@@ -37,8 +37,8 @@ const BookSchema = new mongoose.Schema({
 export const Book = mongoose.model('Book', BookSchema);
 
 const ContactSchema = new mongoose.Schema({
-  phone: { type: String, required: true },
-  name: { type: String, required: true },
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
   email: { type: String, required: true },
   message: { type: String, required: true },
   date: { type: Date, default: Date.now()}
