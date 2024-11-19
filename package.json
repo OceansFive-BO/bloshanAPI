@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon server/index.js",
-    "server-start": "node server/index.js"
+    "server-start": "node server/index.js",
+    "seed": "node server/db/seed.js"
   },
   "dependencies": {
     "axios": "^1.7.7",
