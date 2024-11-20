@@ -3,7 +3,7 @@ import {
   getBooks, getBookByID,
   getBooksByGenre, getBooksByTitle,
   addBook, toggleLendStatus, likeBook,
-  findNewBook
+  findNewBook,removeBookByID
 } from '../controllers/bookController.js';
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.get('/genre/:genre', getBooksByGenre);
 router.put('/:id/like', likeBook);
 router.put('/:id/lend', toggleLendStatus);
 router.get('/:id', getBookByID);
+router.delete('/:id', removeBookByID);
 router.get('/', getBooks);
 router.post('/', addBook);
 
