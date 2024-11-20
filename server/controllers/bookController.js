@@ -24,7 +24,10 @@ export const getBookByID = async (req, res) => {
     return res.send("please include id in route /books/[bookID]");
   }
   try {
-    const book = await Book.findOne({ _id: req.params.id }).select('-borrowerID -due_date -userID');
+    const book = await Book.findOne({ _id: req.params.id });
+    if(book===null){
+      return res.status(404).send("Book Not Found");
+    }
     res.send(book);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -173,7 +176,18 @@ export const findNewBook = async (req, res) => {
   }
 };
 
+export const removeBookByID = async (req, res) => {
+  const _id = req.params.id;
+  if (!_id) return res.status(400).send("Book ID required");
+  try {
+    const ObjectId = mongoose.Types.ObjectId;
+    let book = await Book.deleteOne({ _id: new ObjectId(_id) });
+    res.sendStatus(204);
+  } catch (error) {
+    logAndSendStatus(error, res);
+  }
 
+}
 export const toggleLendStatus = async (req, res) => {
   const _id = req.params.id;
   if (!_id) {
