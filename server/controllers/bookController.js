@@ -29,8 +29,6 @@ export const getBooks = async (req, res) => {
   const count = req.query.count || 20;
   const title = req.query.title;
   const genre = req.query.genre;
-  //console.log(title);
-
 
   let titleRegex = new RegExp(`${formatRegex(title)}`, "i");
   let genreRegex = new RegExp(`${formatRegex(genre)}`, "i");
