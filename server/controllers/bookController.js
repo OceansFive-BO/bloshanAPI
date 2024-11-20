@@ -5,10 +5,13 @@ import 'dotenv/config';
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 const DEFAULT_COUNT = 5;
 
+
 const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
   res.sendStatus(statusCode);
 };
+
+const formatRegex = str => str.replaceAll('(', '\(').replaceAll(')', '\)');
 
 export const getBookByID = async (req, res) => {
   if (!req.params.id) {
@@ -26,8 +29,11 @@ export const getBooks = async (req, res) => {
   const count = req.query.count || 20;
   const title = req.query.title;
   const genre = req.query.genre;
-  let titleRegex = new RegExp(`${title}`, "i");
-  let genreRegex = new RegExp(`${genre}`, "i");
+  //console.log(title);
+
+
+  let titleRegex = new RegExp(`${formatRegex(title)}`, "i");
+  let genreRegex = new RegExp(`${formatRegex(genre)}`, "i");
   const query = {};
   if (title) {
     query.title = titleRegex;
@@ -49,7 +55,7 @@ export const getBooksByGenre = async (req, res) => {
     res.send("Couldn't process request please use route in the format /books/genre/[SearchTerm]");
   }
   const count = DEFAULT_COUNT;
-  let regex = new RegExp(`${genre}`, "i");
+  let regex = new RegExp(`${formatRegex(genre)}`, "i");
   try {
     const books = await Book.find({ genre: regex })
       .select('-borrowerID -due_date -userID').limit(count);
@@ -65,7 +71,7 @@ export const getBooksByTitle = async (req, res) => {
     res.send("This route requires a title in the format books/title/[searchTerm]");
   }
   const count = DEFAULT_COUNT;
-  let regex = new RegExp(`${title}`, "i");
+  let regex = new RegExp(`${formatRegex(title)}`, "i");
   try {
     const books = await Book.find({ title: regex })
       .select('-borrowerID -due_date -userID').limit(count);
@@ -177,7 +183,7 @@ export const toggleLendStatus = async (req, res) => {
     }
     const { available } = book;
     const lenderID = new ObjectId(book.userID);
-    let borrowerID =req.body.userID;
+    let borrowerID = req.body.userID;
     borrowerID = new ObjectId(borrowerID);
     if (!borrowerID) {
       return res.send("Invalid borrowerID in request body");
