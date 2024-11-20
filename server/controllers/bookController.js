@@ -11,7 +11,13 @@ const logAndSendStatus = (e, res, statusCode = 500) => {
   res.sendStatus(statusCode);
 };
 
-const formatRegex = str => str.replaceAll('(', '\(').replaceAll(')', '\)');
+const formatRegex = str => {
+  return str
+    .replaceAll('(', '\\\(')
+    .replaceAll(')', '\\\)')
+    .replaceAll('[', '\\\[')
+    .replaceAll(']', '\\\\]');
+};
 
 export const getBookByID = async (req, res) => {
   if (!req.params.id) {
@@ -30,13 +36,15 @@ export const getBooks = async (req, res) => {
   const title = req.query.title;
   const genre = req.query.genre;
 
-  let titleRegex = new RegExp(`${formatRegex(title)}`, "i");
-  let genreRegex = new RegExp(`${formatRegex(genre)}`, "i");
+  let titleRegex = null;
+  let genreRegex = null;
   const query = {};
   if (title) {
+    titleRegex = new RegExp(`${formatRegex(title)}`, "i");
     query.title = titleRegex;
   }
   if (genre) {
+    genreRegex = new RegExp(`${formatRegex(genre)}`, "i");
     query.genre = genreRegex;
   }
   try {
