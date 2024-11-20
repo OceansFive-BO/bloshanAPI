@@ -15,6 +15,14 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getUserByEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({email: req.params.email});
+    res.send(user);
+  } catch (error) {
+    logAndSendStatus(error, res);
+  }
+}
 export const getUserById = async (req, res) => {
   try {
     const users = await User.findOne({ _id: req.params.id }).select('-password');
