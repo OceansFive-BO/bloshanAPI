@@ -69,11 +69,11 @@ const userSeedData = [
   {
     _id: new mongoose.Types.ObjectId('6736472090d8a0d1e7b37c9d'),
     username: "john_doe",
-    password: "hashedpassword1",
+    //password: "hashedpassword1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
-    email: "john.doe@example.com",
+    email: "test20241118@test123.com",
     address: "123 Main St, Hometown",
     birth_date: new Date('1970-11-14'),
     borrowed_books: ['673802a1ba6a2d66786589c7'],
@@ -83,7 +83,7 @@ const userSeedData = [
   }, {
     _id: new mongoose.Types.ObjectId('5736472090d8a0d1e7b37c9d'),
     username: "john_doe2",
-    password: "hashedpassword1",
+    //password: "hashedpassword1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
@@ -98,7 +98,7 @@ const userSeedData = [
   {
     _id: new mongoose.Types.ObjectId('4736472090d8a0d1e7b37c9d'),
     username: "john_doe3",
-    password: "hashedpassword1",
+    //password: "hashedpassword1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
@@ -112,7 +112,7 @@ const userSeedData = [
   }, {
     _id: new mongoose.Types.ObjectId('3736472090d8a0d1e7b37c9d'),
     username: "john_doe4",
-    password: "hashedpassword1",
+    //password: "hashedpassword1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
@@ -126,7 +126,7 @@ const userSeedData = [
   }, {
     _id: new mongoose.Types.ObjectId('2736472090d8a0d1e7b37c9d'),
     username: "john_doe5",
-    password: "hashedpassword1",
+    //password: "hashedpassword1",
     firstname: "John",
     lastname: "Doe",
     phone: "+1234567890",
