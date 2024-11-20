@@ -16,8 +16,10 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUserByEmail = async (req, res) => {
+  if(!req.params.email) return res.sendStatus(404);
   try {
-    const user = await User.findOne({email: req.params.email});
+    let emailRegex = new RegExp(`^${req.params.email}$`,"i");
+    const user = await User.findOne({email: emailRegex});
     res.send(user);
   } catch (error) {
     logAndSendStatus(error, res);
