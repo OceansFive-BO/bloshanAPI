@@ -47,15 +47,15 @@ const generateRandomBooks = async () => {
         bookID: googleBookId,
         userID: (availableUserIDs[Math.floor(Math.random() * 11)]),
         title,
-        author: authors.join('/'),
+        author: authors?.join('/')||"Unlisted Author",
         description,
         notes: "dummy notes",
-        image: imageLinks?.thumbnail || null,
+        image: imageLinks?.large || null,
         thumbnail: imageLinks?.thumbnail || null,
         maturityRating,
         borrowerID: null,
-        genre: categories?.join('/') || [],
-        publish_date: new Date(publishedDate)
+        genre: categories?.join('/') || "Unlisted Genre",
+        publish_date: new Date(publishedDate||"1900-01-01");
       };
       await Book.create(newBook);
     }
