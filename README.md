@@ -1,52 +1,92 @@
-- # Bloshan API Documentation
-  ## Contents
+# Bloshan API Documentation
+
+## Contents
   - User Endpoints
   - Book Endpoints
   - Contact Endpoint
-  ## User Endpoints
-  - GET `/user/:id/borrowed`
-    - Returns a list of books borrowed by the user.
-    - **Params:** `id` - User's ID. Required.
-  - GET `/user/:id/lending`
-    - Returns a list of books the user is lending.
-    - **Params:** `id` - User's ID. Required.
-  - GET `/user/:id`
-    - Returns user information.
-    - **Params:** `id` - User's ID. Required.
-  - POST `/user/login`
-    - Login in
-    - **Params:** `username`,`password` Required.
-  - POST `/user`
-    - Registers a new user.
+    
+## Getting Started
+
+To get started with the Bloshan API, follow these steps:
+
+1. Clone the repository.
+2. Install the dependencies using `npm install`.
+3. Seed the Database `npm run seed`.
+4. Start the server using `npm start`.
+
+The server will be running on `http://localhost:3000`.
+
+## API Endpoints
+
+### Users
+
+- **GET /users**: Get all users.
+  - **Response**: An array of user objects.
+- **GET /users/:id**: Get a user by ID.
+  - **Parameters**: 
+    - `id` (string): The ID of the user.
+  - **Response**: A user object.
+- **GET /users/email/:email**: Get a user by email.
+  - **Parameters**: 
+    - `email` (string): The email of the user.
+  - **Response**: A user object.
+- **GET /users/:id/borrowed**: Get borrowed books by user ID.
+  - **Parameters**: 
+    - `id` (string): The ID of the user.
+  - **Response**: An array of book objects.
+- **GET /users/:id/lending**: Get total books lent by user ID.
+  - **Parameters**: 
+    - `id` (string): The ID of the user.
+  - **Response**: An array of book objects.
+- **GET /users/:id/recommended**: Get recommended books for a user.
+  - **Parameters**: 
+    - `id` (string): The ID of the user.
+  - **Response**: An array of recommended book objects.
+- **POST /users**: Add a new user.
+  - **Request Body**:
     - **Params:** ` firstname`, `lastname`,`password` , `username`,`phone`,`email`,`address`,`birth_date`,`photo_url`,`preferred_contact`. Required.
-  - POST `/user/logout`
-    - Logs out a user.
-  ## Book Endpoints
-   - GET `/books/newBooks/:title`
-    - Returns books searched by title from google API
-    - **Params:** `genre` - Genre of the books. Required.
-  - GET `/books/`
-    - Returns books in collection
-    - **Query Params:** `genre`,`title`,`count` Optional
-  - GET `/books/genre/:genre`
-    - Returns books searched by genre.
-    - **Params:** `genre` - Genre of the books. Required.
-  - GET `/books/:id`
-    - Returns details for a specific book.
-    - **Params:** `id` - Book ID. Required.
-  - GET `/books/title/:title`
-    - Returns top 5 books containing word in title.
-    - **Params:** `title` - Part of the title. Required.
-  - POST `/books`
-    - Adds a new book to the database.
+  - **Response**: The created user object.
+
+### Books
+
+- **GET /books**: Get all books.
+  - **Response**: An array of book objects.
+- **GET /books/:id**: Get a book by ID.
+  - **Parameters**: 
+    - `id` (string): The ID of the book.
+  - **Response**: A book object.
+- **GET /books/title/:title**: Get books by title.
+  - **Parameters**: 
+    - `title` (string): The title of the book.
+  - **Response**: An array of book objects.
+- **GET /books/genre/:genre**: Get books by genre.
+  - **Parameters**: 
+    - `genre` (string): The genre of the book.
+  - **Response**: An array of book objects.
+- **GET /books/newBooks/:title**: Find new books by title.
+  - **Parameters**: 
+    - `title` (string): The title of the book.
+  - **Response**: An array of new book objects.
+- **PUT /books/:id/like**: Like a book.
+  - **Parameters**: 
+    - `id` (string): The ID of the book.
+  - **Response**: The updated book object.
+- **PUT /books/:id/lend**: Toggle lend status of a book.
+  - **Parameters**: 
+    - `id` (string): The ID of the book.
+  - **Response**: The updated book object.
+- **POST /books**: Add a new book.
+  - **Request Body**:
     - **Params:** ` userID`,`bookID`. Required. `notes` Optional.
-  - PUT `/books/:id/lend`
-    - Updates the lending and borrowing status of a book.
-    - **Params:** `id` - Book ID. `userID` id- borrower Required.
-  - PUT `/books/:id/like`
-    - Updates the lending and borrowing status of a book.
-    - **Params:** `id` - Book ID Required.
-  ## Contact Endpoint
-  - POST `/contact`
-    - Allows users to send messages or feedback.
-    - **Params:** ` date`,`name`, `message`. Required.`phone`,`email` Optional.
+  - **Response**: The created book object.
+- **DELETE /books/:id**: Remove a book by ID.
+  - **Parameters**: 
+    - `id` (string): The ID of the book.
+  - **Response**: A message indicating the book was deleted.
+
+### Contacts
+
+- **POST /contact**: Save a new contact.
+  - **Request Body**:
+    **Params:** `firstname`,`lastname`, `email`, `message`, `date`. Required.
+  - **Response**: The created contact object.
