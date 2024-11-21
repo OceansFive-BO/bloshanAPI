@@ -21,5 +21,5 @@ app.use('/books', bookRoutes);
 app.use('/contact',contactRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://Port:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
