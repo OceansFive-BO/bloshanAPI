@@ -11,7 +11,7 @@ const startSeed = async () => {
     await generateRandomBooks();
   } catch (err) {
     console.error('MongoDB connection error:', err)
-  }finally{
+  } finally {
     mongoose.disconnect();
   }
 }
@@ -26,38 +26,28 @@ const seedDatabase = async () => {
     await Book.deleteMany({});
     await Contact.deleteMany({});
     const users = await User.insertMany(userSeedData);
-    const books = await Book.insertMany(bookSeedData);
+    //const books = await Book.insertMany(bookSeedData);
     const contact = await Contact.insertMany(contactSeedData);
     console.log("seeded");
   } catch (error) {
     console.error("Error seeding database:", error);
   }
 };
-const generateRandomBooks = async () => {
+const generateRandomBooks = async (pageCount = 1) => {
   try {
-    const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/?q=*&startIndex=4&maxResults=40&key=${API_KEY}`);
-    const { items } = data;
-    const batch = []
-      for ( const item of items){
-      const googleBookId = item.id;
-      const { title, publishedDate, description, maturityRating, imageLinks } = item.volumeInfo;
-      const authors = item.volumeInfo.authors || ["Unlisted"];
-      const categories = item.volumeInfo.categories || ["Unlisted"];
-      const newBook = {
-        bookID: googleBookId,
-        userID: (availableUserIDs[Math.floor(Math.random() * 11)]),
-        title,
-        author: authors.join('/'),
-        description,
-        notes: "dummy notes",
-        image: imageLinks?.thumbnail || null,
-        thumbnail: imageLinks?.thumbnail || null,
-        maturityRating,
-        borrowerID: null,
-        genre: categories?.join('/') || [],
-        publish_date: new Date(publishedDate||"01-01-1920")
-      };
-      await Book.create(newBook);
+    let items = [];
+    for (let i = 0; i < pageCount; i++) {
+      const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/?q=*&startIndex=${4 + i}&maxResults=40&key=${API_KEY}`);
+      items.push(...data.items.map(x => x.id));
+    }
+    let count = 0;
+    for (const item of items) {
+      const userID = availableUserIDs[Math.floor(Math.random() * 11)];
+      const bookID = item;
+      const notes = "dummy notes";
+      let res = await axios.post(`http://localhost:3000/books`, { userID, bookID,notes })
+      console.log(`seed #${count++}: ${res.data._id}`);
+
     }
   } catch (error) {
     console.log("error getting books", error)
@@ -244,7 +234,7 @@ const bookSeedData = [
     description: "A beginner's guide to JavaScript",
     notes: "Useful for front-end development",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    available:false,
+    available: false,
     maturityRating: 'NOT_MATURE',
     genre: "Programming",
     publish_date: new Date("2020-01-01"),
@@ -262,7 +252,7 @@ const bookSeedData = [
     description: "In-depth guide on data structures",
     notes: "For intermediate programmers",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    available:false,
+    available: false,
     maturityRating: 'NOT_MATURE',
     genre: "Computer Science",
     publish_date: new Date("2019-06-15"),
@@ -280,7 +270,7 @@ const bookSeedData = [
     description: "An advanced guide to modern web tools",
     notes: "Covers React, Angular, Vue",
     image: "https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg",
-    available:false,
+    available: false,
     maturityRating: 'MATURE',
     genre: "Programming",
     publish_date: new Date("2021-03-10"),
