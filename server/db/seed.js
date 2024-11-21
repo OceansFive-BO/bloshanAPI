@@ -49,30 +49,6 @@ const generateRandomBooks = async (pageCount = 1) => {
       console.log(`seed #${count++}: ${res.data._id}`);
 
     }
-    //const { items } = data;
-    // const batch = []
-    //   for ( const item of items){
-    //   const googleBookId = item.id;
-    //   const { title, publishedDate, description, maturityRating, imageLinks } = item.volumeInfo;
-    //   console.log(imageLinks);
-    //   const authors = item.volumeInfo.authors || ["Unlisted"];
-    //   const categories = item.volumeInfo.categories || ["Unlisted"];
-    //   const newBook = {
-    //     bookID: googleBookId,
-    //     userID: (availableUserIDs[Math.floor(Math.random() * 11)]),
-    //     title,
-    //     author: authors.join('/'),
-    //     description,
-    //     notes: "dummy notes",
-    //     image: imageLinks?.large || null,
-    //     thumbnail: imageLinks?.thumbnail || null,
-    //     maturityRating,
-    //     borrowerID: null,
-    //     genre: categories?.join('/'),
-    //     publish_date: new Date(publishedDate||"1920-01-01")
-    //   };
-    //   await Book.create(newBook);
-    // }
   } catch (error) {
     console.log("error getting books", error)
   }
