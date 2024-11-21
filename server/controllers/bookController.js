@@ -25,7 +25,7 @@ export const getBookByID = async (req, res) => {
   }
   try {
     const book = await Book.findOne({ _id: req.params.id });
-    if(book===null){
+    if (book === null) {
       return res.status(404).send("Book Not Found");
     }
     res.send(book);
@@ -124,19 +124,19 @@ export const addBook = async (req, res) => {
       bookID: googleBookId,
       userID,
       title,
-      author: authors.join('/'),
+      author: authors?.join('/') || "Unlisted Author",
       description,
       notes,
-      image: imageLinks?.extraLarge||imageLinks?.large,
+      image: imageLinks?.extraLarge || imageLinks?.large,
       thumbnail: imageLinks?.thumbnail,
       maturityRating,
       borrowerID: null,
-      genre: categories.join('/'),
-      publish_date: new Date(publishedDate||"01-01-1920")
+      genre: categories?.join('/') || "Unlisted Genre",
+      publish_date: new Date(publishedDate || "1920-01-01")
     };
 
     let bookDBEntry = await Book.create(newBook);
-    res.status(201).send({_id:bookDBEntry._id});
+    res.status(201).send({ _id: bookDBEntry._id });
   } catch (error) {
     logAndSendStatus(error, res);
   }
