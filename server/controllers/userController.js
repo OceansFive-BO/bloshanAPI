@@ -5,10 +5,13 @@ const logAndSendStatus = (e, res, statusCode = 500) => {
   console.error(e);
   res.sendStatus(statusCode);
 };
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password');
+    const users = await User.find()
     res.send(users);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -18,8 +21,12 @@ export const getUsers = async (req, res) => {
 export const getUserByEmail = async (req, res) => {
   if(!req.params.email) return res.sendStatus(404);
   try {
-    let emailRegex = new RegExp(`^${req.params.email}$`,"i");
+    let emailRegex = new RegExp(`^${escapeRegExp(req.params.email)}$`,"i");
     const user = await User.findOne({email: emailRegex});
+    console.log(user);
+    if(!user){
+      return res.status(404).send(`User with E-mail ${req.params.email} not found`);
+    }
     res.send(user);
   } catch (error) {
     logAndSendStatus(error, res);
@@ -27,7 +34,7 @@ export const getUserByEmail = async (req, res) => {
 }
 export const getUserById = async (req, res) => {
   try {
-    const users = await User.findOne({ _id: req.params.id }).select('-password');
+    const users = await User.findOne({ _id: req.params.id })
     res.send(users);
   } catch (error) {
     logAndSendStatus(error, res);
