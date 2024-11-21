@@ -127,7 +127,7 @@ export const addBook = async (req, res) => {
       author: authors?.join('/') || "Unlisted Author",
       description,
       notes,
-      image: imageLinks?.extraLarge || imageLinks?.large,
+      image:  imageLinks?.thumbnail|| imageLinks?.large,
       thumbnail: imageLinks?.thumbnail,
       maturityRating,
       borrowerID: null,
