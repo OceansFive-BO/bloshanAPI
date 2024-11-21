@@ -25,7 +25,7 @@ export const getBookByID = async (req, res) => {
   }
   try {
     const book = await Book.findOne({ _id: req.params.id });
-    if(book===null){
+    if (book === null) {
       return res.status(404).send("Book Not Found");
     }
     res.send(book);
@@ -116,27 +116,27 @@ export const addBook = async (req, res) => {
   try {
     const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
     const bookData = data;
-    const { volumeInfo, publisher, description } = bookData;
+    const { volumeInfo, publisher,  } = bookData;
     const { title, authors, imageLinks,
-      maturityRating, categories, publishedDate } = volumeInfo;
+      maturityRating, categories, publishedDate,description } = volumeInfo;
 
     newBook = {
       bookID: googleBookId,
       userID,
       title,
-      author: authors.join('/'),
+      author: authors?.join('/')||"Unlisted Author",
       description,
       notes,
-      image: imageLinks?.extraLarge||imageLinks?.large,
+      image: imageLinks?.large||imageLinks?.medium||imageLinks?.thumbnail,
       thumbnail: imageLinks?.thumbnail,
       maturityRating,
       borrowerID: null,
-      genre: categories.join('/'),
-      publish_date: new Date(publishedDate||"01-01-1920")
+      genre: categories?.join('/')||"Unlisted Genre",
+      publish_date: new Date(publishedDate || "01-01-1920")
     };
 
     let bookDBEntry = await Book.create(newBook);
-    res.status(201).send({_id:bookDBEntry._id});
+    res.status(201).send({ _id: bookDBEntry._id });
   } catch (error) {
     logAndSendStatus(error, res);
   }
@@ -160,13 +160,13 @@ export const findNewBook = async (req, res) => {
       const newBook = {
         bookID: googleBookId,
         title,
-        author: authors.join('/'),
+        author: authors?.join('/')||"Unlisted Author",
         description,
-        image: imageLinks?.thumbnail || null,
+        image: imageLinks?.large || imageLinks?.medium || imageLinks?.thumbnail || null,
         thumbnail: imageLinks?.thumbnail || null,
         maturityRating,
-        genre: categories?.join('/') || [],
-        publish_date: new Date(publishedDate)
+        genre: categories?.join('/') || "Unlisted Genre",
+        publish_date: new Date(publishedDate || "1900-01-01")
       };
       batch.push(newBook);
     }
