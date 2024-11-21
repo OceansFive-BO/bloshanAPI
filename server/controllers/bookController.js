@@ -116,9 +116,9 @@ export const addBook = async (req, res) => {
   try {
     const { data } = await axios.get(`https://www.googleapis.com/books/v1/volumes/${googleBookId}`);
     const bookData = data;
-    const { volumeInfo, publisher, description } = bookData;
+    const { volumeInfo, publisher,  } = bookData;
     const { title, authors, imageLinks,
-      maturityRating, categories, publishedDate } = volumeInfo;
+      maturityRating, categories, publishedDate,description } = volumeInfo;
 
     newBook = {
       bookID: googleBookId,
@@ -162,11 +162,11 @@ export const findNewBook = async (req, res) => {
         title,
         author: authors?.join('/'),
         description,
-        image: imageLinks?.thumbnail || null,
+        image: imageLinks?.large || imageLinks?.medium||imageLinks?.thumbnail|| null,
         thumbnail: imageLinks?.thumbnail || null,
         maturityRating,
-        genre: categories?.join('/') || [],
-        publish_date: new Date(publishedDate)
+        genre: categories?.join('/'),
+        publish_date: new Date(publishedDate||"1920-01-01")
       };
       batch.push(newBook);
     }
