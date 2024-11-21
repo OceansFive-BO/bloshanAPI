@@ -55,7 +55,7 @@ const generateRandomBooks = async () => {
         maturityRating,
         borrowerID: null,
         genre: categories?.join('/') || [],
-        publish_date: new Date(publishedDate||"01-01-1920");
+        publish_date: new Date(publishedDate||"01-01-1920")
       };
       await Book.create(newBook);
     }
