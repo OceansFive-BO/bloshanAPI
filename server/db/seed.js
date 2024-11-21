@@ -55,7 +55,7 @@ const generateRandomBooks = async () => {
         maturityRating,
         borrowerID: null,
         genre: categories?.join('/') || "Unlisted Genre",
-        publish_date: new Date(publishedDate||"1900-01-01");
+        publish_date: new Date(publishedDate||"1900-01-01")
       };
       await Book.create(newBook);
     }
@@ -293,14 +293,16 @@ const contactSeedData = [
   {
     date: new Date("2021-03-10"),
     phone: "111-222-3333",
-    name: "Charlie",
+    firstname: "Charlie",
+    lastname: "Brown",
     email: "charlie@example.com",
     message: "I would like more information about your service."
   },
   {
     date: new Date("2021-03-10"),
     phone: "444-555-6666",
-    name: "Diana",
+    firstname: "Diana",
+    lastname: "Prince",
     email: "diana@example.com",
     message: "Can I borrow more than three books at a time?"
   }
