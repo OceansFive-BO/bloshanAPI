@@ -127,16 +127,16 @@ export const addBook = async (req, res) => {
       author: authors.join('/'),
       description,
       notes,
-      image: imageLinks.large,
-      thumbnail: imageLinks.thumbnail,
+      image: imageLinks?.extraLarge||imageLinks?.large,
+      thumbnail: imageLinks?.thumbnail,
       maturityRating,
       borrowerID: null,
       genre: categories.join('/'),
-      publish_date: new Date(publishedDate)
+      publish_date: new Date(publishedDate||"01-01-1920")
     };
 
     let bookDBEntry = await Book.create(newBook);
-    res.sendStatus(201);
+    res.status(201).send({_id:bookDBEntry._id});
   } catch (error) {
     logAndSendStatus(error, res);
   }
