@@ -160,7 +160,7 @@ export const findNewBook = async (req, res) => {
       const newBook = {
         bookID: googleBookId,
         title,
-        author: authors.join('/'),
+        author: authors?.join('/'),
         description,
         image: imageLinks?.thumbnail || null,
         thumbnail: imageLinks?.thumbnail || null,
