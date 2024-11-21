@@ -125,7 +125,7 @@ export const addBook = async (req, res) => {
       userID,
       title,
       author: authors?.join('/') || "Unlisted Author",
-      description:description.replace(/(<([^>]+)>)/ig, '');,
+      description:description.replace(/(<([^>]+)>)/ig, ''),
       notes,
       image:  imageLinks?.thumbnail|| imageLinks?.large,
       thumbnail: imageLinks?.thumbnail,
